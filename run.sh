@@ -4,8 +4,8 @@ source .bask.sh
 
 bask_default_task="usage"
 
-export DOCFX_ARCH_ALL=amd64 arm64
-export DOCFX_VERSIONS=2.51
+export DOCFX_ARCH_ALL="amd64 arm64"
+export DOCFX_VERSIONS="2.51 2.50"
 export DOCFX_VERSION_LATEST=2.51
 
 task_usage() {
@@ -28,7 +28,7 @@ task_build() {
 task_publish() {
         docker rmi --force $(docker images -q foonsoft/docker-docfx) || :
         bask_sequence all
-        docker push --all-tags foonsoft/docker-fx
+        docker push --all-tags foonsoft/docker-docfx
 }
 
 task_all() {
@@ -37,12 +37,12 @@ task_all() {
 }
 
 task_amd64() {
-        bask_run build_versions ${DOCFX_VERSIONS} amd64
+        bask_run build_versions "${DOCFX_VERSIONS}" amd64
         bask_run tag ${DOCFX_VERSION_LATEST} amd64 amd64
 }
 
 task_arm64() {
-        bask_run build_versions ${DOCFX_VERSIONS} arm64
+        bask_run build_versions "${DOCFX_VERSIONS}" arm64
         bask_run tag ${DOCFX_VERSION_LATEST} arm64 arm64
 }
 
