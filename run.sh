@@ -15,12 +15,12 @@ task_usage() {
 task_build() {
         case ${OSTYPE} in
         darwin*)
-                bask_run build ${DOCFX_LATEST_VERSION} arm64
-                bask_run tag ${DOCFX_LATEST_VERSION} arm64 latest
+                bask_run build ${DOCFX_VERSION_LATEST} arm64
+                bask_run tag ${DOCFX_VERSION_LATEST} arm64 latest
                 ;;
         *)
-                bask_run build ${DOCFX_LATEST_VERSION} amd64
-                bask_run tag ${DOCFX_LATEST_VERSION} amd64 latest
+                bask_run build ${DOCFX_VERSION_LATEST} amd64
+                bask_run tag ${DOCFX_VERSION_LATEST} amd64 latest
                 ;;
         esac
 }
