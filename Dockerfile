@@ -1,5 +1,8 @@
-FROM mono:6.8 as build-amd64
+
+ARG BUILDARCH=${TARGETARCH}
+
 FROM arm64v8/mono:6.8 as build-arm64
+FROM mono:6.8 as build-amd64
 
 FROM alpine:latest as docfx-package
 
@@ -10,7 +13,7 @@ RUN apk add -U wget unzip \
  && wget https://github.com/dotnet/docfx/releases/download/v${DOCFX_VERSION}/docfx.zip -O /tmp/docfx.zip \
  && unzip /tmp/docfx.zip -d /tmp/docfx
 
-FROM build-${TARGETARCH}
+FROM build-${BUILDARCH}
 
 RUN apt-get update \
  && apt-get install -y \
