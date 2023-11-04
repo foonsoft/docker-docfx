@@ -4,12 +4,12 @@
       "src": [
         {
           "files": [
-            "src/**.csproj"
+            "src/DocfxSample.csproj"
           ]
         }
       ],
       "dest": "api",
-      "disableGitFeatures": false,
+      "disableGitFeatures": true,
       "disableDefaultFilter": false
     }
   ],

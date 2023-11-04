@@ -1,15 +1,18 @@
 using UnityEngine;
 
-/// <summary>
-/// サンプルクラス
-/// </summary>
-public class Sample : MonoBehaviour
+namespace DocfxSample
 {
     /// <summary>
-    /// Start.
+    /// サンプルクラス
     /// </summary>
-    void Start()
+    public class Sample : MonoBehaviour
     {
-        //
+        /// <summary>
+        /// Start.
+        /// </summary>
+        void Start()
+        {
+            //
+        }
     }
 }
