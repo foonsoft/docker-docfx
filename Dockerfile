@@ -48,11 +48,11 @@ RUN apt-get update \
  && apt-get install -y nginx
 
 COPY entrypoint.sh /entrypoint.sh
-#COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
 RUN chmod 755 /entrypoint.sh
 
-EXPOSE 80
+EXPOSE 8080
 
 ENTRYPOINT ["bash", "/entrypoint.sh"]
 

@@ -21,9 +21,16 @@ task_init() {
 
 task_serve() {
         bask_run docker run \
-                -v $(ospath $(pwd)):/work -w /work -p 8080:80 -it \
+                -v $(ospath $(pwd)):/work -w /work -p 8080:8080 -it \
                 --rm foonsoft/docker-docfx \
                 nginx-serve ./DocfxSample/docfx.json
+}
+
+task_doc() {
+        bask_run docker run \
+                -v $(ospath $(pwd)):/work -w /work \
+                --rm foonsoft/docker-docfx \
+                build ./DocfxSample/docfx.json
 }
 
 task_build() {
