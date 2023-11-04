@@ -21,10 +21,9 @@ task_init() {
 
 task_serve() {
         bask_run docker run \
-                -v $(ospath $(pwd)):/work -w /work \
-                -p 8080:8080 \
+                -v $(ospath $(pwd)):/work -w /work -p 8080:80 -it \
                 --rm foonsoft/docker-docfx \
-                ./DocfxSample/docfx.json --serve
+                nginx-serve ./DocfxSample/docfx.json
 }
 
 task_build() {
@@ -80,8 +79,9 @@ build() {
 
         docker build . \
                 -t foonsoft/docker-docfx:${version}.${arch} \
+                --target docfx-nginx-serve \
                 --build-arg DOCFX_VERSION=${version} \
-                --build-arg BUILDARCH=${arch}
+                --build-arg MONO_ARCH=${arch}
 }
 
 tag() {

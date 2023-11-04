@@ -1,8 +1,8 @@
 
-ARG BUILDARCH=${TARGETARCH}
+ARG MONO_ARCH=${TARGETARCH}
 
-FROM arm64v8/mono:6.8 as build-arm64
-FROM mono:6.8 as build-amd64
+FROM mono:6.8 as mono-amd64
+FROM arm64v8/mono:6.8 as mono-arm64
 
 FROM alpine:latest as docfx-package
 
@@ -13,7 +13,7 @@ RUN apk add -U wget unzip \
  && wget https://github.com/dotnet/docfx/releases/download/v${DOCFX_VERSION}/docfx.zip -O /tmp/docfx.zip \
  && unzip /tmp/docfx.zip -d /tmp/docfx
 
-FROM build-${BUILDARCH}
+FROM mono-${MONO_ARCH} as docfx-base
 
 RUN apt-get update \
  && apt-get install -y \
@@ -33,8 +33,26 @@ RUN apt-get update \
 
 COPY --from=docfx-package --chown=docfx:docfx /tmp/docfx /opt/docfx
 
+FROM docfx-base as docfx
+
 USER docfx
 
 EXPOSE 8080
 
 ENTRYPOINT ["/usr/bin/mono", "/opt/docfx/docfx.exe"]
+
+# https://github.com/dotnet/docfx/issues/3615
+FROM docfx-base as docfx-nginx-serve
+
+RUN apt-get update \
+ && apt-get install -y nginx
+
+COPY entrypoint.sh /entrypoint.sh
+#COPY nginx.conf /etc/nginx/nginx.conf
+
+RUN chmod 755 /entrypoint.sh
+
+EXPOSE 80
+
+ENTRYPOINT ["bash", "/entrypoint.sh"]
+

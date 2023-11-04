@@ -8,9 +8,17 @@ namespace DocfxSample
     public class Sample : MonoBehaviour
     {
         /// <summary>
-        /// Start.
+        /// 開始
         /// </summary>
         void Start()
+        {
+            //
+        }
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        void Update()
         {
             //
         }
