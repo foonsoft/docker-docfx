@@ -12,6 +12,21 @@ task_usage() {
         bask_list_tasks
 }
 
+task_init() {
+        bask_run docker run \
+                -v $(ospath $(pwd)):/work -w /work \
+                --rm foonsoft/docker-docfx \
+                init -q -o ./DocfxSample
+}
+
+task_serve() {
+        bask_run docker run \
+                -v $(ospath $(pwd)):/work -w /work \
+                -p 8080:8080 \
+                --rm foonsoft/docker-docfx \
+                ./DocfxSample/docfx.json --serve
+}
+
 task_build() {
         case ${OSTYPE} in
         darwin*)
@@ -26,9 +41,13 @@ task_build() {
 }
 
 task_publish() {
-        docker rmi --force $(docker images -q foonsoft/docker-docfx) || :
+        bask_sequence cleanup
         bask_sequence all
         docker push --all-tags foonsoft/docker-docfx
+}
+
+task_cleanup() {
+        docker rmi --force $(docker images -q foonsoft/docker-docfx) || :
 }
 
 task_all() {
@@ -72,6 +91,17 @@ tag() {
 
         docker tag \
                 foonsoft/docker-docfx:${version}.${arch} \
-                foonsoft/docker-docfx${new_tag:-:}${new_tag}
+                foonsoft/docker-docfx:${new_tag}
+}
+
+ospath() {
+        case ${OSTYPE} in
+        cygwin)
+                echo $(cygpath -w "${1}")
+                ;;
+        *)
+                echo "${1}"
+                ;;
+        esac
 }
 
